@@ -61,7 +61,11 @@
 					hint		= '';
 
 				for (var i = 1; i <= opt.number; i++) {
-					starFile = (start < i) ? opt.starOff : opt.starOn;
+					if(opt.center){
+						starFile = ( (i <= start && start > opt.centerStart && i >= opt.centerStart) || (i >= start && start < opt.centerStart && i <= opt.centerStart) || (i == start && i == opt.centerStart)) ? opt.starOn : opt.starOff;
+					} else {
+						starFile = (start < i) ? opt.starOff : opt.starOn;
+					}
 
 					hint = (i <= opt.hintList.length && opt.hintList[i - 1] !== null) ? opt.hintList[i - 1] : i;
 
@@ -229,7 +233,9 @@
 				if (opt.iconRange && opt.iconRange.length > count) {
 					star = opt.iconRange[count];
 
-					if (opt.single) {
+					if(opt.center){
+						icon = ((i <= score && score > opt.centerStart && i >= opt.centerStart) || (i >= score && score < opt.centerStart && i <= opt.centerStart) || (i == score && i == opt.centerStart)) ? (star.on || opt.starOn) : (star.off || opt.starOff);
+					} else if (opt.single) {
 						icon = (i == score) ? (star.on || opt.starOn) : (star.off || opt.starOff);
 					} else {
 						icon = (i <= score) ? (star.on || opt.starOn) : (star.off || opt.starOff);
@@ -243,7 +249,9 @@
 						count++;
 					}
 				} else {
-					if (opt.single) {
+					if(opt.center){
+						icon = ((i <= score && score > opt.centerStart && i >= opt.centerStart) || (i >= score && score < opt.centerStart && i <= opt.centerStart) || (i == score && i == opt.centerStart)) ? opt.starOn : opt.starOff;
+					} else if (opt.single) {
 						icon = (i == score) ? opt.starOn : opt.starOff;
 					} else {
 						icon = (i <= score) ? opt.starOn : opt.starOff;
@@ -442,6 +450,8 @@
 		readOnly:		false,
 		scoreName:		'score',
 		single:			false,
+		center:			false,
+		centerStart:	4,
 		size:			16,
 		space:			true,
 		starHalf:		'star-half.png',
